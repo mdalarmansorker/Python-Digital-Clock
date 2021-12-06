@@ -21,7 +21,7 @@ def getTime():
 	'''This function updates the time and checks if it matches the alarm time.
 	If it matches, the alarm sound is played'''
 
-	time  = datetime.now().strftime("%H:%M:%S")
+	time  = datetime.now().strftime("%I:%M:%S %p")
 	time2 = datetime.now().strftime("\n%A - %d %B\n%Y")
 	if time == alarm_time:
 		mixer.music.play(-1)
@@ -32,22 +32,12 @@ def getTime():
 
 def alarm():
 	'''Function to set the alarm time in a Toplevel window'''
-	global hour, minute, second
+	global hour, minute, second, p
 	top = Toplevel(root)
 	top.title("Set An Alarm")
 	top.geometry("400x400")
 
-	# hour = Entry(top, width = 5, relief = RAISED)
-	# hour.grid(row = 0, column = 0, padx = (130, 10), pady = (150, 40))
-
-	# mint = Entry(top, width = 5, relief = RAISED)
-	# mint.grid(row = 0, column = 1, padx = 10, pady = (150, 40))
-
-	# sec = Entry(top, width = 5, relief = RAISED)
-	# sec.grid(row = 0, column = 2, padx = 10, pady = (150, 40))
-
-	# confirm = Button(top, text = "Set", command = confirmAlarm, padx = 20)
-	# confirm.grid(columnspan = 3, padx = (130, 10))
+	
 	Label(top,text="Alarm Clock",font=("Helvetica 20 bold"),fg="red").pack(pady=10)
 	Label(top,text="Set Time",font=("Helvetica 15 bold")).pack()
 
@@ -91,18 +81,23 @@ def alarm():
 
 	secs = OptionMenu(frame, second, *seconds)
 	secs.pack(side=LEFT)
+	p = StringVar(top)
+	ps = ('AM','PM')
+	p.set(ps[0])
+	pa = OptionMenu(frame,p,*ps)
+	pa.pack(side=LEFT)
 
 	Button(top,text="Set Alarm",font=("Helvetica 15"),command=confirmAlarm).pack(pady=20)
 
 
 def confirmAlarm():
 	'''This function obtains and sets the alarm time'''
-	global hour, minute, second, alarm_time
+	global hour, minute, second, alarm_time,p
 	hour_val = hour.get()
 	mint_val = minute.get()
 	sec_val = second.get()
-
-	alarm_time = f"{hour_val}:{mint_val}:{sec_val}"
+	p_val = p.get()
+	alarm_time = f"{hour_val}:{mint_val}:{sec_val} {p_val}"
 
 def stopAlarm():
 	mixer.music.stop()
