@@ -7,10 +7,13 @@ from tkcalendar import Calendar
 root = Tk()
 root.title("Clock by MD Al Arman Sorker")
 root.configure(bg="black")
+#for transparent window
+#root.attributes('-alpha',0.5)
+
 
 Label(text="Bangladesh Army University Of Science And Technology, Saidpur, Nilphamari\nDepartment Of Computer Science And Engineering\nCSE 2200 - Software Development Project I\nMD Al Arman Sorker - 200101059",bg="black",width=60,font=("Times 18 bold"),fg="yellow").pack(pady=10)
 # ***** VARIABLES *****
-#calender
+#calendar
 def calender():
 
     calen = Toplevel()
@@ -113,17 +116,22 @@ except pygame.error:
 
 alarm_time = ""
 
+def getdate():
+	time2 = datetime.now().strftime("%A - %B %d\n%Y")
+	label1.config(text = time2,fg="Yellow")
+	label1.after(1000,getdate)
+
 def getTime():
 	'''This function updates the time and checks if it matches the alarm time.
 	If it matches, the alarm sound is played'''
 
 	time  = datetime.now().strftime("%I:%M:%S %p")
-	time2 = datetime.now().strftime("\n%A - %B %d\n%Y")
+	
 	if time == alarm_time:
 		mixer.music.play(-1)
 		stopAlarm.config(state = NORMAL)
 	
-	label.config(text = time+time2)
+	label.config(text = time,fg="red")
 	label.after(1000, getTime)
 
 def alarm():
@@ -198,20 +206,24 @@ def stopAlarm():
 	mixer.music.stop()
 	stopAlarm.config(state = DISABLED)
 
-# Tkinter Widgets
-label = Label(root, text = "", font = "ds-digital 65", width=20, bg = "black", fg = "red")
+#for time
+label = Label(root, text = "", font = "ds-digital 130", bg = "black", fg = "red")
 label.pack()
-
+#for date
+label1 = Label(root, text = "", font = "ds-digital 65", width=20, bg = "black", fg = "red")
+label1.pack()
+#for stopwatch button
 Stopwatch = Button(root, text = 'Stopwatch', font=("ds-digital 15 bold"),height=5, width=10,fg="red",bg="yellow",padx = 50, command = stopwatch)
 Stopwatch.pack(side = LEFT)
-
+#for alarm button
 setAlarm = Button(root, text = 'Alarm', font=("ds-digital 15 bold"),height=5, width=10,fg="red",bg="yellow",padx = 50, command = alarm)
 setAlarm.pack(side = LEFT)
-
+#for stop alarm button
 stopAlarm = Button(root, text = 'Stop',font=("ds-digital 15 bold"),height=5, width=10,fg="red",bg="yellow", state = DISABLED, padx = 50, command = stopAlarm)
 stopAlarm.pack(side = LEFT)
+#for calender button
 Calender = Button(root, text = 'Calender',font=("ds-digital 15 bold"),height=5, width=10,fg="red",bg="yellow", padx = 50, command = calender).pack(side=LEFT)
 
 getTime()
-
+getdate()
 root.mainloop()
